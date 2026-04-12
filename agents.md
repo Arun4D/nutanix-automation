@@ -14,7 +14,7 @@ Build a platform that:
 
 1. Automates full server lifecycle:
 
-   * Day 0: Nutanix AHV OS build and VM provisioning on Nutanix
+   * Day 0: Nutanix AHV OS build (via Packer) and VM provisioning (via Terraform) on Nutanix
    * Day 1: OS configuration and application deployment
    * Day 2: Patching, monitoring, auto-remediation, scaling
 

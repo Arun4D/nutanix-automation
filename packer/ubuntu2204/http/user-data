@@ -1,0 +1,13 @@
+#cloud-config
+autoinstall:
+  version: 1
+  identity:
+    hostname: ubuntu-template
+    password: "$6$ex/X5H7K8P0/r2L1$D.Z/x9tV/A3...jO."
+    username: ubuntu
+  ssh:
+    install-server: true
+    allow-pw: true
+  packages:
+    - qemu-guest-agent
+    - chrony

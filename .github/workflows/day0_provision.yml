@@ -18,8 +18,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Nutanix OS Build
-        run: echo "Building Nutanix AHV Image if missing..."
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+
+      - name: Nutanix OS Build (Packer)
+        working-directory: ./packer/ubuntu2204
+        run: |
+          packer init .
+          packer validate .
+          # packer build . # (Uncomment when credentials are set)
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
