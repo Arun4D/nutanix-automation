@@ -24,3 +24,15 @@ variable "memory_size_mib" {
 variable "subnet_name" {
   type = string
 }
+
+variable "image_name" {
+  type        = string
+  description = "Name of the base OS image to clone"
+  default     = "Ubuntu-22.04"
+}
+
+variable "admin_pub_key" {
+  type        = string
+  description = "Public SSH key for the admin user"
+  default     = "ssh-rsa dummy-key-replace-me user@host"
+}

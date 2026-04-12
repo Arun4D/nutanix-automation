@@ -1,0 +1,23 @@
+#cloud-config
+users:
+  - name: admin
+    ssh-authorized-keys:
+      - ${admin_pub_key}
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: sudo
+    shell: /bin/bash
+
+# Update OS on first boot
+package_update: true
+package_upgrade: true
+
+# Install base packages
+packages:
+  - qemu-guest-agent
+  - chrony
+  - curl
+  - python3
+
+runcmd:
+  - systemctl enable qemu-guest-agent
+  - systemctl start qemu-guest-agent

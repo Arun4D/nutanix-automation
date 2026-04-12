@@ -15,6 +15,10 @@ data "nutanix_subnet" "subnet" {
   subnet_name = var.subnet_name
 }
 
+data "nutanix_image" "image" {
+  image_name = var.image_name
+}
+
 resource "nutanix_virtual_machine" "vm" {
   name                 = var.vm_name
   cluster_uuid         = data.nutanix_cluster.cluster.id
@@ -28,6 +32,10 @@ resource "nutanix_virtual_machine" "vm" {
 
   disk_list {
     disk_size_bytes = 50 * 1024 * 1024 * 1024
+    data_source_reference {
+      kind = "image"
+      uuid = data.nutanix_image.image.id
+    }
     device_properties {
       device_type = "DISK"
       disk_address {
@@ -36,4 +44,8 @@ resource "nutanix_virtual_machine" "vm" {
       }
     }
   }
+
+  guest_customization_cloud_init_user_data = base64encode(templatefile("${path.module}/templates/user_data.yaml.tftpl", {
+    admin_pub_key = var.admin_pub_key
+  }))
 }

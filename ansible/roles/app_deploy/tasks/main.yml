@@ -1,8 +1,16 @@
 ---
-- name: Install required application packages
+- name: Install NGINX
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: nginx
     state: present
-  loop:
-    - nginx
-    - git
+
+- name: Start and enable NGINX
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Deploy application landing page
+  ansible.builtin.copy:
+    content: "<html><body><h1>Nutanix AIOps Platform - Managed Application</h1></body></html>"
+    dest: /usr/share/nginx/html/index.html
