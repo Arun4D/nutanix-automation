@@ -14,11 +14,14 @@ Build a platform that:
 
 1. Automates full server lifecycle:
 
-   * Day -1: Nutanix Foundation (Bare-metal Node imaging & Cluster Creation)
-   * Day 0 Infra: Lifecycle Management (AOS & Firmware Upgrades via LCM APIs)
-   * Day 0: Nutanix AHV OS build (via Packer) and VM provisioning (via Terraform) on Nutanix
-   * Day 1: OS configuration and application deployment
-   * Day 2: Patching, monitoring, auto-remediation, scaling
+   * Day 0 (Foundation): Bare-metal provisioning. Automate node imaging, hypervisor installation (AHV), and cluster formation using **Nutanix Foundation APIs**.
+   * Day 1 (Provisioning): Infrastructure-as-Code. 
+    - Build base OS images (Gold Images) using **HashiCorp Packer** with the Nutanix AHV builder.
+    - Provision Clusters, VMs, and Networks using the **Nutanix Terraform Provider**.
+   * Day 1.5 (Configuration): OS-level setup. Deploy applications and harden OS configurations using **Ansible** or Nutanix Cloud Manager (NCM) Self-Service.
+   * Day 2 (Operations): Maintenance and scaling.
+    - Automate AOS, AHV, and Firmware updates via **Nutanix Lifecycle Manager (LCM) APIs**.
+    - Implement auto-remediation, monitoring, and horizontal scaling.
 
 2. Uses ServiceNow as the control plane:
 
