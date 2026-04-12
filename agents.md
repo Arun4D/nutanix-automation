@@ -18,7 +18,7 @@ Build a platform that:
    * Day 1 (Provisioning): Infrastructure-as-Code. 
     - Build base OS images (Gold Images) using **HashiCorp Packer** with the Nutanix AHV builder.
     - Provision Clusters, VMs, and Networks using the **Nutanix Terraform Provider**.
-   * Day 1.5 (Configuration): OS-level setup. Deploy applications and harden OS configurations using **Ansible** or Nutanix Cloud Manager (NCM) Self-Service.
+   * Day 1.5 (Configuration): OS-level setup. Harden OS configurations using **Ansible** or Nutanix Cloud Manager (NCM) Self-Service.
    * Day 2 (Operations): Maintenance and scaling.
     - Automate AOS, AHV, and Firmware updates via **Nutanix Lifecycle Manager (LCM) APIs**.
     - Implement auto-remediation, monitoring, and horizontal scaling.
@@ -135,7 +135,7 @@ Design the system with these layers:
 Generate step-by-step flows for:
 
 1. Server build (Day 0)
-2. App deployment (Day 1)
+2. App deployment (Separate application stack CI/CD)
 3. Patch management (Day 2)
 4. Auto-remediation (alerts → fix)
 5. Resource scaling (CPU/disk expansion)

@@ -1,7 +1,6 @@
 ---
-- name: Day 1.5 - Baseline Configuration and Application Deployment
+- name: Day 1.5 - Baseline Configuration
   hosts: all
   become: yes
   roles:
     - os_baseline
-    - app_deploy
