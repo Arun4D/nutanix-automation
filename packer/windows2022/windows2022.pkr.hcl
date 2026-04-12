@@ -22,8 +22,11 @@ variable "nutanix_subnet" {
 }
 
 source "nutanix" "windows2022" {
-  nutanix_cluster  = var.nutanix_cluster
-  nutanix_subnet   = var.nutanix_subnet
+  cluster_name     = var.nutanix_cluster
+
+  vm_nics {
+    subnet_name    = var.nutanix_subnet
+  }
   
   os_type          = "Windows"
   boot_type        = "uefi"

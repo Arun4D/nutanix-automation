@@ -7,22 +7,31 @@ terraform {
   }
 }
 
-resource "null_resource" "foundation_imaging" {
-  count = length(var.nodes)
+resource "nutanix_foundation_central_image_cluster" "cluster_build" {
+  cluster_name        = var.cluster_name
+  cluster_external_ip = var.cluster_ip
+  redundancy_factor   = 2
 
-  provisioner "local-exec" {
-    command = "echo 'Imaging Node MAC: ${var.nodes[count.index].mac_address} via Foundation API...'"
+  common_network_settings {
+    cvm_vlan_id        = 0
+    hypervisor_vlan_id = 0
+    subnet_mask        = "255.255.255.0"
+    default_gateway    = "10.0.0.1"
   }
-}
 
-resource "null_resource" "cluster_creation" {
-  depends_on = [null_resource.foundation_imaging]
-
-  provisioner "local-exec" {
-    command = "echo 'Executing Cluster Create for ${var.cluster_name} with IP ${var.cluster_ip}'"
+  dynamic "node_list" {
+    for_each = var.nodes
+    content {
+      mac_address   = node_list.value.mac_address
+      cvm_ip        = var.cvm_ip_pool[node_list.key]
+      hypervisor_ip = var.hypervisor_ip_pool[node_list.key]
+      ipmi_ip       = var.ipmi_ip_pool[node_list.key]
+      node_position = node_list.key
+      image_now     = true
+    }
   }
 }
 
 output "cluster_name" {
-  value = var.cluster_name
+  value = nutanix_foundation_central_image_cluster.cluster_build.cluster_name
 }
