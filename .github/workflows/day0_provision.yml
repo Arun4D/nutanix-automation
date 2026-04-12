@@ -1,0 +1,34 @@
+name: Day 0 Provisioning
+on:
+  repository_dispatch:
+    types: [provision_vm]
+  workflow_dispatch:
+    inputs:
+      ritm_id:
+        description: 'ServiceNow RITM ID'
+        required: true
+      vm_name:
+        description: 'Target VM Name'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Nutanix OS Build
+        run: echo "Building Nutanix AHV Image if missing..."
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init & Apply
+        working-directory: ./terraform/environments/dev
+        run: |
+          terraform init
+          terraform apply -auto-approve -var="vm_name=${{ github.event.client_payload.vm_name || github.event.inputs.vm_name }}"
+
+      - name: Update CMDB
+        run: echo "Calling SNOW API to register VM in CMDB"

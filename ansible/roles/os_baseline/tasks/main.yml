@@ -1,0 +1,6 @@
+---
+- name: Ensure latest security updates are installed
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
+    security: yes

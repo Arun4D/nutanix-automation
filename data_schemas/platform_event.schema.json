@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PlatformEvent",
+  "type": "object",
+  "properties": {
+    "event_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "request_id": { "type": "string" },
+    "action_type": { "type": "string", "enum": ["CREATE", "PATCH", "RESIZE", "RETIRE", "MIGRATE"] },
+    "resource": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["type", "id", "name"]
+    },
+    "payload": { "type": "object" },
+    "status": { "type": "string", "enum": ["PENDING", "SUCCESS", "FAILED"] }
+  },
+  "required": ["event_id", "timestamp", "action_type", "resource"]
+}

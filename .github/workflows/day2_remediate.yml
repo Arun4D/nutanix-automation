@@ -1,0 +1,15 @@
+name: Day 2 Remediation
+on:
+  repository_dispatch:
+    types: [remediate_alert]
+
+jobs:
+  remediate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Assess & Remediate
+        run: |
+          echo "Executing remediation payload: ${{ toJson(github.event.client_payload) }}"
