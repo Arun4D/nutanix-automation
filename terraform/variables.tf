@@ -35,13 +35,10 @@ variable "memory_size_mib" {
 
 variable "image_name" {
   type    = string
-  default = "Ubuntu-22.04"
+  default = "Ubuntu-22.04-Golden"
 }
 
-variable "image_source_uri" {
-  type    = string
-  default = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
-}
+
 
 variable "admin_pub_key" {
   type    = string
