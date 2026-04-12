@@ -31,4 +31,10 @@ jobs:
           terraform apply -auto-approve -var-file="environments/dev.tfvars" -var="vm_name=${{ github.event.client_payload.vm_name || github.event.inputs.vm_name }}"
 
       - name: Update CMDB
-        run: echo "Calling SNOW API to register VM in CMDB"
+        env:
+          SNOW_INSTANCE_URL: ${{ secrets.SNOW_INSTANCE_URL }}
+          SNOW_USER: ${{ secrets.SNOW_USER }}
+          SNOW_PASSWORD: ${{ secrets.SNOW_PASSWORD }}
+        run: |
+          pip install requests
+          python scripts/snow_updater.py "${{ github.event.client_payload.vm_name || github.event.inputs.vm_name }}" "SUCCESS"

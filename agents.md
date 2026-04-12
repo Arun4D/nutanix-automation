@@ -21,6 +21,8 @@ Build a platform that:
 2. Uses ServiceNow as the control plane:
 
    * All actions must go through ServiceNow (RITM or Change)
+   * Utilizes standard SNOW Table API and Scripted REST APIs for bidirectional syncing
+   * Exposes explicit Webhook receivers to trigger downstream execution engines upon approval
    * CMDB stores current state
    * Custom Activity Table stores lifecycle history
 
