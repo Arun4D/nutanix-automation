@@ -20,12 +20,12 @@ async def snow_webhook(payload: Dict[str, Any]):
     event_type = payload.get("event")
     
     if event_type == "RITM_APPROVED":
-        print(f"Triggering day0 provision for {payload.get('vm_name')}")
+        print(f"Triggering day1 provision for {payload.get('vm_name')}")
         return {"status": "Provisioning Initiated"}
     
     elif event_type == "CHG_APPROVED":
-        print(f"Triggering day2 remediation for {payload.get('target_ci')}")
-        return {"status": "Remediation Initiated"}
+        print(f"Triggering day2 operations for {payload.get('target_ci')}")
+        return {"status": "Operations Initiated"}
         
     raise HTTPException(status_code=400, detail="Unknown SNOW Event")
 

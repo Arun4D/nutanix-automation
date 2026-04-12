@@ -1,4 +1,4 @@
-name: Day 0 Provisioning
+name: Day 1 Provisioning
 on:
   repository_dispatch:
     types: [provision_vm]

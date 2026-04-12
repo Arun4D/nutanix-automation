@@ -1,4 +1,4 @@
-name: Day 2 Remediation
+name: Day 2 Operations
 on:
   repository_dispatch:
     types: [remediate_alert]
@@ -22,3 +22,10 @@ jobs:
           echo "Scaling VM: ${{ github.event.client_payload.vm_name }}"
           terraform init
           terraform apply -auto-approve -var-file="environments/prod.tfvars" -var="vm_name=${{ github.event.client_payload.vm_name }}" -var="num_vcpus_per_socket=4"
+      - name: Assess & Execute LCM Upgrades
+        if: ${{ github.event.client_payload.action == 'lcm_update' }}
+        env:
+          PRISM_IP: ${{ secrets.PRISM_IP }}
+        run: |
+          pip install requests
+          python infrastructure/lcm/manager.py update

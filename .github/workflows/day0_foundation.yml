@@ -1,0 +1,20 @@
+name: Day 0 Foundation
+on:
+  repository_dispatch:
+    types: [foundation_bootstrap]
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init & Apply Foundation
+        working-directory: ./terraform/modules/nutanix_foundation
+        run: |
+          terraform init
+          terraform apply -auto-approve

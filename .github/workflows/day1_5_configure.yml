@@ -1,4 +1,4 @@
-name: Day 1 Configuration
+name: Day 1.5 Configuration
 on:
   repository_dispatch:
     types: [configure_vm]
