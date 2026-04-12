@@ -17,7 +17,7 @@ jobs:
 
       - name: Assess & Execute Scaling
         if: ${{ github.event.client_payload.action == 'scale_up' }}
-        working-directory: ./terraform
+        working-directory: ./terraform/vms
         run: |
           echo "Scaling VM: ${{ github.event.client_payload.vm_name }}"
           terraform init

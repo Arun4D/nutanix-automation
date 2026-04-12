@@ -43,7 +43,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init & Apply
-        working-directory: ./terraform
+        working-directory: ./terraform/vms
         run: |
           terraform init
           terraform apply -auto-approve -var-file="environments/dev.tfvars" -var="vm_name=${{ github.event.client_payload.vm_name || github.event.inputs.vm_name }}"

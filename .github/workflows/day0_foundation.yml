@@ -14,7 +14,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init & Apply Foundation
-        working-directory: ./terraform/modules/nutanix_foundation
+        working-directory: ./terraform/foundation
         run: |
           terraform init
-          terraform apply -auto-approve
+          terraform apply -auto-approve -var-file="environments/dev.tfvars"
