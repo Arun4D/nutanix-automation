@@ -13,7 +13,7 @@ jobs:
       - name: Assess & Execute OS Patching
         if: ${{ github.event.client_payload.action == 'patch_os' }}
         run: |
-          ansible-playbook -i ansible/inventories/dynamic_snow.py ansible/roles/patching/playbook.yml
+          ansible-playbook -i ansible/inventories/dynamic_snow.py ansible/playbooks/day2_operations.yml --tags "patch"
 
       - name: Assess & Execute Scaling
         if: ${{ github.event.client_payload.action == 'scale_up' }}

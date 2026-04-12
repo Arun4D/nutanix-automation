@@ -1,0 +1,8 @@
+---
+- name: Install Windows Security Updates
+  ansible.windows.win_updates:
+    category_names:
+      - SecurityUpdates
+      - CriticalUpdates
+    reboot: yes
+    state: installed

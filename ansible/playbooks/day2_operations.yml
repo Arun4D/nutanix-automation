@@ -1,0 +1,9 @@
+---
+- name: Day 2 - Patching and Operations
+  hosts: all
+  become: yes
+  roles:
+    - role: patching
+      tags: ["patch"]
+    - role: monitoring_agent
+      tags: ["monitor"]

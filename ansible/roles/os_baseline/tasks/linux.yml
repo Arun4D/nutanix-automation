@@ -1,0 +1,15 @@
+---
+- name: Set timezone to UTC
+  ansible.builtin.timezone:
+    name: UTC
+
+- name: Install and enable chrony (NTP)
+  ansible.builtin.package:
+    name: chrony
+    state: present
+
+- name: Start and enable chronyd
+  ansible.builtin.service:
+    name: chronyd
+    state: started
+    enabled: yes

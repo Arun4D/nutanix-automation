@@ -1,21 +1,6 @@
 ---
-- name: Set timezone to UTC
-  ansible.builtin.timezone:
-    name: UTC
+- import_tasks: linux.yml
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
 
-- name: Install and enable chrony (NTP)
-  ansible.builtin.package:
-    name: chrony
-    state: present
-
-- name: Start and enable chronyd
-  ansible.builtin.service:
-    name: chronyd
-    state: started
-    enabled: yes
-
-- name: Ensure latest security updates are installed
-  ansible.builtin.yum:
-    name: '*'
-    state: latest
-    security: yes
+- import_tasks: windows.yml
+  when: ansible_os_family == 'Windows'

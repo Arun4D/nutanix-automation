@@ -12,5 +12,4 @@ jobs:
 
       - name: Run Ansible Configuration
         run: |
-          ansible-playbook -i ansible/inventories/dynamic_snow.py ansible/roles/os_baseline/playbook.yml
-          ansible-playbook -i ansible/inventories/dynamic_snow.py ansible/roles/app_deploy/playbook.yml
+          ansible-playbook -i ansible/inventories/dynamic_snow.py ansible/playbooks/day1_5_configure.yml

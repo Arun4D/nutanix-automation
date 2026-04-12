@@ -1,7 +1,0 @@
----
-- name: Deploy Application
-  hosts: all
-  become: yes
-  tasks:
-    - import_role:
-        name: app_deploy

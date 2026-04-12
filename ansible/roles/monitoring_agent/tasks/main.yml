@@ -1,29 +1,6 @@
 ---
-- name: Download Prometheus Node Exporter
-  ansible.builtin.unarchive:
-    src: https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
-    dest: /usr/local/bin
-    remote_src: yes
-    extra_opts: [--strip-components=1]
+- import_tasks: linux.yml
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
 
-- name: Create systemd service for Node Exporter
-  ansible.builtin.copy:
-    dest: /etc/systemd/system/node_exporter.service
-    content: |
-      [Unit]
-      Description=Node Exporter
-      After=network.target
-
-      [Service]
-      User=root
-      ExecStart=/usr/local/bin/node_exporter
-
-      [Install]
-      WantedBy=multi-user.target
-
-- name: Start Node Exporter service
-  ansible.builtin.systemd:
-    name: node_exporter
-    state: started
-    enabled: yes
-    daemon_reload: yes
+- import_tasks: windows.yml
+  when: ansible_os_family == 'Windows'

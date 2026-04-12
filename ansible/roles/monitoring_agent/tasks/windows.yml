@@ -1,0 +1,11 @@
+---
+- name: Download Windows Exporter MSI
+  ansible.windows.win_get_url:
+    url: https://github.com/prometheus-community/windows_exporter/releases/download/v0.24.0/windows_exporter-0.24.0-amd64.msi
+    dest: C:\windows_exporter.msi
+
+- name: Install Windows Exporter
+  ansible.windows.win_package:
+    path: C:\windows_exporter.msi
+    state: present
+    arguments: ENABLED_COLLECTORS=cpu,cs,logical_disk,net,os,system

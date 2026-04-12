@@ -1,7 +1,0 @@
----
-- name: OS Baseline Configuration
-  hosts: all
-  become: yes
-  tasks:
-    - import_role:
-        name: os_baseline
