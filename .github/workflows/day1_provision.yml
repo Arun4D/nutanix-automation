@@ -21,12 +21,23 @@ jobs:
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
 
-      - name: Nutanix OS Build (Packer)
+      - name: Nutanix OS Build (Ubuntu)
         working-directory: ./packer/ubuntu2204
         run: |
           packer init .
           packer validate .
-          # packer build . # (Uncomment when credentials are set)
+
+      - name: Nutanix OS Build (RHEL 9)
+        working-directory: ./packer/rhel9
+        run: |
+          packer init .
+          packer validate .
+
+      - name: Nutanix OS Build (Windows 2022)
+        working-directory: ./packer/windows2022
+        run: |
+          packer init .
+          packer validate .
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
