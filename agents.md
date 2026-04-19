@@ -86,6 +86,7 @@ Design the system with these layers:
 2. AI Layer (multi-agent):
 
    * Intent Agent
+   * Nutanix Data Agent
    * Decision Agent
    * Risk Agent
    * Insight Agent

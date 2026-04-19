@@ -7,11 +7,14 @@ from .agents.decision_agent import DecisionAgent
 from .agents.action_agent import ActionAgent
 from .agents.snow_agent import SnowAgent
 from .agents.execution_agent import ExecutionAgent
+from .agents.nutanix_data_agent import NutanixDataAgent
+
 
 class AIOpsOrchestrator:
     def __init__(self):
-        # Instantiate the 8 Agent Nodes
+        # Instantiate the 9 Agent Nodes
         self.intent_agent = IntentAgent()
+        self.nutanix_data_agent = NutanixDataAgent()
         self.insight_agent = InsightAgent()
         self.monitoring_agent = MonitoringAgent()
         self.risk_agent = RiskAgent()
@@ -30,6 +33,7 @@ class AIOpsOrchestrator:
         context = self.intent_agent.process(context)
         
         # 2. Parallel data gathering (Mocked as sequential for now)
+        context = self.nutanix_data_agent.process(context)
         context = self.insight_agent.process(context)
         context = self.monitoring_agent.process(context)
         context = self.risk_agent.process(context)

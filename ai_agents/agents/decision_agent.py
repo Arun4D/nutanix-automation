@@ -7,10 +7,20 @@ class DecisionAgent(BaseAgent):
         
         intent = context.get("intent")
         risk = context.get("risk_analysis", {}).get("level", "HIGH")
+        cluster_data = context.get("cluster_data", {})
+        
+        # Example: check if there's enough capacity for provision
+        memory_capacity = cluster_data.get("memory_capacity_bytes", 1)
+        memory_usage = cluster_data.get("memory_usage_bytes", 0)
+        memory_usage_percent = (memory_usage / memory_capacity) * 100
         
         if intent == "PROVISION":
-            decision = "APPROVED_FOR_ACTION"
-            reasoning = "Standard request, low risk footprint."
+            if memory_usage_percent > 85:
+                decision = "REQUIRE_MANUAL_REVIEW"
+                reasoning = f"Cluster memory usage is high ({memory_usage_percent:.1f}%). Requires review before provisioning."
+            else:
+                decision = "APPROVED_FOR_ACTION"
+                reasoning = "Standard request, low risk footprint, cluster has sufficient capacity."
         elif intent == "PATCH" or intent == "REMEDIATE":
             if risk == "HIGH":
                 decision = "REQUIRE_MANUAL_REVIEW"
