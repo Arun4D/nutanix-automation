@@ -164,24 +164,66 @@ Generate step-by-step flows for:
 
 # 🗄️ DATA DESIGN
 
-Provide:
+**1. ServiceNow schema:**
 
-1. ServiceNow schema:
+*   **CMDB fields (Server CI):**
+    *   `name`, `ip_address`, `os_version`
+    *   `u_nutanix_cluster`: Reference to Nutanix Cluster CI
+    *   `u_hypervisor`: AHV / ESXi
+    *   `u_vcpu`, `u_memory_gb`, `u_storage_container`
+    *   `u_environment`: Dev / QA / Prod
+    *   `u_application_owner`, `u_support_group`
+    *   `u_status`: Provisioning / Active / Maintenance / Retired
+*   **Activity Table Structure (`u_automation_activity`):**
+    *   `u_activity_id` (String - UUID)
+    *   `u_ci` (Reference to CMDB CI)
+    *   `u_change_request` (Reference to CHG ticket)
+    *   `u_action_type` (Choice: Provision, Patch, Scale, Remediate, Migrate)
+    *   `u_triggered_by` (String: Agent Name or User ID)
+    *   `u_status` (Choice: Pending, Running, Success, Failed)
+    *   `u_payload` (JSON String)
+    *   `u_execution_log` (String)
 
-   * CMDB fields
-   * Activity table structure
+**2. Event schema (JSON for pipelines):**
+```json
+{
+  "event_id": "evt-8f7d9a1-4b2c",
+  "timestamp": "2026-04-20T01:50:00Z",
+  "source_system": "ai_action_agent",
+  "event_type": "infra.provision.requested",
+  "target_ci": "ai-deployed-vm-01",
+  "snow_ticket": "CHG0012345",
+  "payload": {
+    "hypervisor": "AHV",
+    "cluster": "NTNX-PROD-01",
+    "vcpu": 2,
+    "memory_gb": 4,
+    "network": "vlan-100",
+    "image": "RHEL_8_Gold"
+  },
+  "status": "initiated"
+}
+```
 
-2. Event schema (JSON for pipelines)
+**3. Data Lake structure:**
 
-3. Data Lake structure:
+*   **Folder Layout & Partitioning (S3/ADLS):**
+    *   `s3://datalake-nutanix/raw/events/year=YYYY/month=MM/day=DD/` (Pipeline JSON events)
+    *   `s3://datalake-nutanix/raw/telemetry/cluster=CLUSTER_NAME/year=YYYY/month=MM/day=DD/` (AHV stats from NutanixDataAgent)
+    *   `s3://datalake-nutanix/processed/cmdb_snapshots/year=YYYY/month=MM/` (Periodic ServiceNow state syncs)
+    *   `s3://datalake-nutanix/curated/ai_insights/` (Aggregated analytics for the Insight Agent)
 
-   * folder layout
-   * partitioning
+**4. Graph DB schema (Neo4j):**
 
-4. Graph DB schema:
-
-   * nodes
-   * relationships
+*   **Nodes:**
+    *   `Cluster`, `Host`, `VM`, `Application`, `ChangeRequest`, `Incident`, `Alert`
+*   **Relationships:**
+    *   `(VM)-[:HOSTED_ON]->(Host)`
+    *   `(Host)-[:PART_OF]->(Cluster)`
+    *   `(Application)-[:RUNS_ON]->(VM)`
+    *   `(ChangeRequest)-[:AFFECTS]->(VM)`
+    *   `(Alert)-[:TRIGGERED_ON]->(VM)`
+    *   `(VM_New)-[:MIGRATED_FROM]->(VM_Legacy)` (Maintains Lineage)
 
 ---
 

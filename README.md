@@ -13,6 +13,12 @@ This project implements an enterprise-grade AIOps platform on Nutanix covering D
 - **Data-Driven Operations**: Telemetry and historical execution data are stored in a Data Lake for analytical insights.
 - **End-to-End Automation**: Outputs structured automation payloads for Day 1 (Provisioning) and Day 2 (Patching, Remediation) actions.
 
+## Data Design
+- **ServiceNow Schema**: Tracks `u_nutanix_cluster`, `u_hypervisor`, and standard VM properties in the CMDB, along with a custom Activity table (`u_automation_activity`) to trace AI actions.
+- **Event Schema**: A standardized JSON structure for pipeline events including `event_type`, `target_ci`, `snow_ticket`, and contextual `payload` (e.g. `vcpu`, `memory_gb`, `image`).
+- **Data Lake (S3/ADLS)**: Partitioned storage layout capturing raw pipeline events, telemetry from Nutanix AHV clusters, periodic CMDB snapshots, and curated AI insights.
+- **Graph Database (Neo4j)**: Tracks lineage and relationships such as `(VM)-[:HOSTED_ON]->(Host)` and `(ChangeRequest)-[:AFFECTS]->(VM)`.
+
 ## Project Structure
 - `ai_agents/`: Contains the core multi-agent orchestration logic.
   - `orchestrator.py`: The pipeline manager that coordinates parallel data gathering and sequential decision-making across agents.
